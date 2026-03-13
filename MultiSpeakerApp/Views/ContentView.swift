@@ -1,11 +1,11 @@
 import SwiftUI
+import AppKit
 import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @State private var showRenameSheet  = false
     @State private var showExporter     = false
-    @State private var showImporter     = false
     @State private var showApiKeySheet  = false
     @State private var exportSnapshot   = ""
 
@@ -60,7 +60,7 @@ struct ContentView: View {
                         appState.startRecording()
                     }
                 },
-                onImport:  { showImporter    = true },
+                onImport:  { openImportPanel() },
                 onRename:  { showRenameSheet = true },
                 onExport:  { exportSnapshot = appState.exportText; showExporter = true }
             )
@@ -72,20 +72,6 @@ struct ContentView: View {
                 suggestions:   appState.lemurSuggestions,
                 speakerMap:    appState.speakerMap
             )
-        }
-        .fileImporter(
-            isPresented: $showImporter,
-            allowedContentTypes: [.audio, .mpeg4Audio, .mp3, .wav, .aiff],
-            allowsMultipleSelection: false
-        ) { result in
-            switch result {
-            case .success(let urls):
-                if let url = urls.first {
-                    appState.importAndTranscribe(url: url)
-                }
-            case .failure(let error):
-                print("[Import] File picker error: \(error.localizedDescription)")
-            }
         }
         .fileExporter(
             isPresented: $showExporter,
@@ -107,6 +93,34 @@ struct ContentView: View {
             if appState.configError != nil {
                 showApiKeySheet = true
             }
+        }
+    }
+
+    // MARK: - Import
+
+    /// Opens NSOpenPanel pre-navigated to the Voice Memos recordings folder.
+    /// Falls back to the user's home directory if Voice Memos isn't found.
+    private func openImportPanel() {
+        let panel = NSOpenPanel()
+        panel.title = "Import Audio"
+        panel.message = "Select a Voice Memo or other audio file"
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.canChooseFiles = true
+        panel.allowedContentTypes = [.audio, .mpeg4Audio, .mp3, .wav, .aiff]
+
+        // Try to start inside the Voice Memos recordings folder.
+        // NSOpenPanel handles the directory traversal at OS level, so the app
+        // sandbox does not block setting this directoryURL.
+        let voiceMemosURL = URL(fileURLWithPath: NSHomeDirectory())
+            .appendingPathComponent(
+                "Library/Group Containers/group.com.apple.VoiceMemos.shared/Recordings"
+            )
+        panel.directoryURL = voiceMemosURL
+
+        panel.begin { response in
+            guard response == .OK, let url = panel.url else { return }
+            DispatchQueue.main.async { appState.importAndTranscribe(url: url) }
         }
     }
 
