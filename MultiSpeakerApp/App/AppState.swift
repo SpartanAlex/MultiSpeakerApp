@@ -1,27 +1,49 @@
 import Foundation
 import Combine
 
-/// Root application state. Owns the audio pipeline and streaming client.
+// MARK: - Diarization status
+
+enum DiarizationStatus: Equatable {
+    case idle
+    case uploading
+    case processing(String)   // status message
+    case complete
+    case failed(String)
+}
+
+// MARK: - AppState
+
+/// Root application state. Owns the full audio → streaming → diarization pipeline.
 final class AppState: ObservableObject {
 
     // MARK: - Published state
 
-    @Published private(set) var isRecording       = false
+    @Published private(set) var isRecording         = false
     @Published private(set) var configError: String?
-    @Published private(set) var chunkCount        = 0
-    @Published private(set) var streamingState    = StreamingClient.State.disconnected
-    /// Live transcript turns — grows during recording, enriched with speaker
-    /// labels after diarization in Phase (d).
+    @Published private(set) var chunkCount           = 0
+    @Published private(set) var streamingState       = StreamingClient.State.disconnected
     @Published private(set) var utterances: [Utterance] = []
-    /// The in-progress partial turn being updated in real time.
-    @Published private(set) var partialText: String = ""
+    @Published private(set) var partialText: String  = ""
+    @Published private(set) var diarizationStatus    = DiarizationStatus.idle
+    /// LeMUR-suggested names keyed by speaker label. Shown in the rename sheet.
+    @Published private(set) var lemurSuggestions: [String: String?] = [:]
 
     // MARK: - Sub-systems
 
     private(set) var config: AppConfig?
-    let audioEngine    = AudioCaptureEngine()
-    let fileWriter     = AudioFileWriter()
-    let streamingClient = StreamingClient()
+    let speakerMap          = SpeakerMap()
+    let audioEngine         = AudioCaptureEngine()
+    let fileWriter          = AudioFileWriter()
+    let streamingClient     = StreamingClient()
+    let diarizationClient   = DiarizationClient()
+
+    // MARK: - Computed helpers
+
+    /// Unique speaker labels present in the current transcript, in order of appearance.
+    var speakerLabels: [String] {
+        var seen = Set<String>()
+        return utterances.compactMap { $0.speakerLabel }.filter { seen.insert($0).inserted }
+    }
 
     // MARK: - Init
 
@@ -48,38 +70,28 @@ final class AppState: ObservableObject {
     private func wireAudioEngine() {
         audioEngine.onAudioChunk = { [weak self] data in
             guard let self else { return }
-            // Called on audio thread — both calls below are thread-safe.
             self.fileWriter.append(data)
             self.streamingClient.send(audioChunk: data)
-
-            DispatchQueue.main.async {
-                self.chunkCount += 1
-            }
+            DispatchQueue.main.async { self.chunkCount += 1 }
         }
     }
 
     private func wireStreamingClient() {
         streamingClient.onStateChange = { [weak self] state in
-            // Already dispatched to main by StreamingClient.
             self?.streamingState = state
         }
-
         streamingClient.onTurn = { [weak self] transcript, isEndOfTurn in
             guard let self else { return }
-            // Already on main thread.
             if isEndOfTurn {
-                // Finalise the partial turn and append it.
                 if !transcript.isEmpty {
                     let turn = Utterance(turnIndex: self.utterances.count, text: transcript)
                     self.utterances.append(turn)
                 }
                 self.partialText = ""
             } else {
-                // Update the rolling partial display.
                 self.partialText = transcript
             }
         }
-
         streamingClient.onError = { error in
             print("[AppState] Streaming error: \(error.localizedDescription)")
         }
@@ -93,16 +105,18 @@ final class AppState: ObservableObject {
         utterances.removeAll()
         partialText = ""
         chunkCount  = 0
+        lemurSuggestions = [:]
+        speakerMap.reset()
+        diarizationStatus = .idle
 
         streamingClient.connect(apiKey: key)
-
         do {
             try audioEngine.start()
             isRecording = true
             print("[AppState] Recording started")
         } catch {
             streamingClient.disconnect()
-            print("[AppState] Failed to start audio engine: \(error.localizedDescription)")
+            print("[AppState] Failed to start audio: \(error.localizedDescription)")
         }
     }
 
@@ -111,8 +125,80 @@ final class AppState: ObservableObject {
         audioEngine.stop()
         streamingClient.disconnect()
         isRecording = false
-        print("[AppState] Recording stopped — " +
-              "\(utterances.count) turns, " +
-              "\(String(format: "%.1f", fileWriter.duration))s of audio")
+        print("[AppState] Recording stopped — \(utterances.count) turns, " +
+              "\(String(format: "%.1f", fileWriter.duration))s")
+        triggerDiarization()
+    }
+
+    // MARK: - Diarization
+
+    private func triggerDiarization() {
+        guard let key = config?.assemblyAIKey else { return }
+        guard fileWriter.byteCount > 0 else {
+            print("[AppState] No audio to diarize")
+            return
+        }
+
+        let tempURL = FileManager.default.temporaryDirectory
+            .appendingPathComponent(UUID().uuidString)
+            .appendingPathExtension("wav")
+
+        do {
+            try fileWriter.writeWAV(to: tempURL)
+        } catch {
+            diarizationStatus = .failed("Could not write audio file: \(error.localizedDescription)")
+            return
+        }
+
+        diarizationStatus = .uploading
+
+        Task {
+            do {
+                let result = try await diarizationClient.transcribe(
+                    wavURL: tempURL,
+                    apiKey: key,
+                    onStatus: { msg in
+                        DispatchQueue.main.async {
+                            self.diarizationStatus = .processing(msg)
+                        }
+                    }
+                )
+                try? FileManager.default.removeItem(at: tempURL)
+                await MainActor.run { self.mergeResults(result) }
+            } catch {
+                try? FileManager.default.removeItem(at: tempURL)
+                await MainActor.run {
+                    self.diarizationStatus = .failed(error.localizedDescription)
+                    print("[AppState] Diarization failed: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    private func mergeResults(_ result: DiarizationClient.TranscriptResult) {
+        // Replace streaming placeholder turns with diarized utterances.
+        utterances = result.utterances.enumerated().map { index, d in
+            var u = Utterance(turnIndex: index, text: d.text)
+            u.speakerLabel = d.speaker
+            return u
+        }
+
+        // Store LeMUR suggestions for the rename sheet.
+        lemurSuggestions = result.suggestedNames
+
+        // Pre-apply suggestions that have a confident name.
+        for (label, name) in result.suggestedNames {
+            if let name { speakerMap.setName(name, for: label) }
+        }
+
+        diarizationStatus = .complete
+        print("[AppState] Diarization merged — \(utterances.count) utterances, " +
+              "\(result.suggestedNames.filter { $0.value != nil }.count) names suggested")
+    }
+
+    // MARK: - Speaker renaming
+
+    func renameSpeaker(label: String, name: String) {
+        speakerMap.setName(name, for: label)
     }
 }

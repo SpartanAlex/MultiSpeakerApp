@@ -1,13 +1,20 @@
 import SwiftUI
 
-/// Bottom toolbar with record/stop, streaming status, and diagnostics.
+/// Bottom toolbar with record/stop, streaming status, diarization state, and rename button.
 struct ControlBar: View {
     let isRecording: Bool
     let streamingState: StreamingClient.State
     let chunkCount: Int
     let utteranceCount: Int
+    let diarizationStatus: DiarizationStatus
     let configError: String?
     let onToggleRecording: () -> Void
+    let onRename: () -> Void
+
+    private var canRename: Bool {
+        if case .complete = diarizationStatus { return true }
+        return false
+    }
 
     var body: some View {
         HStack(spacing: 16) {
@@ -16,12 +23,20 @@ struct ControlBar: View {
 
             Spacer()
 
-            // Diagnostics
-            if isRecording || utteranceCount > 0 {
+            // Turn count
+            if utteranceCount > 0 {
                 Text("\(utteranceCount) turns")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
+
+            // Rename speakers button — enabled once diarization completes
+            Button(action: onRename) {
+                Label("Rename", systemImage: "person.text.rectangle")
+                    .font(.body)
+            }
+            .disabled(!canRename)
+            .help(canRename ? "Rename speakers" : "Available after diarization completes")
 
             // Record / Stop button
             Button(action: onToggleRecording) {
