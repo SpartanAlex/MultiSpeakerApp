@@ -3,10 +3,11 @@ import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
-    @State private var showRenameSheet = false
-    @State private var showExporter    = false
-    @State private var showImporter    = false
-    @State private var showApiKeySheet = false
+    @State private var showRenameSheet  = false
+    @State private var showExporter     = false
+    @State private var showImporter     = false
+    @State private var showApiKeySheet  = false
+    @State private var exportSnapshot   = ""
 
     var body: some View {
         VStack(spacing: 0) {
@@ -37,7 +38,8 @@ struct ContentView: View {
             TranscriptView(
                 utterances:  appState.utterances,
                 partialText: appState.partialText,
-                speakerMap:  appState.speakerMap
+                speakerMap:  appState.speakerMap,
+                onTextChange: { id, text in appState.updateUtteranceText(id: id, text: text) }
             )
             .padding(12)
 
@@ -60,7 +62,7 @@ struct ContentView: View {
                 },
                 onImport:  { showImporter    = true },
                 onRename:  { showRenameSheet = true },
-                onExport:  { showExporter    = true }
+                onExport:  { exportSnapshot = appState.exportText; showExporter = true }
             )
         }
         .frame(minWidth: 500, minHeight: 500)
@@ -87,7 +89,7 @@ struct ContentView: View {
         }
         .fileExporter(
             isPresented: $showExporter,
-            document: TranscriptDocument(text: appState.exportText),
+            document: TranscriptDocument(text: exportSnapshot),
             contentType: .plainText,
             defaultFilename: "Transcript"
         ) { result in

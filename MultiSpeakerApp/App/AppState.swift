@@ -255,6 +255,13 @@ final class AppState: ObservableObject {
               "\(result.suggestedNames.filter { $0.value != nil }.count) names suggested")
     }
 
+    // MARK: - Utterance editing
+
+    func updateUtteranceText(id: UUID, text: String) {
+        guard let i = utterances.firstIndex(where: { $0.id == id }) else { return }
+        utterances[i].text = text
+    }
+
     // MARK: - Speaker renaming
 
     func renameSpeaker(label: String, name: String) {

@@ -5,14 +5,20 @@ struct TranscriptView: View {
     let utterances: [Utterance]
     let partialText: String
     let speakerMap: SpeakerMap
+    /// Called when the user edits an utterance's text inline.
+    var onTextChange: ((UUID, String) -> Void)?
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 2) {
                     ForEach(utterances) { utterance in
-                        UtteranceRow(utterance: utterance, speakerMap: speakerMap)
-                            .id(utterance.id)
+                        UtteranceRow(
+                            utterance: utterance,
+                            speakerMap: speakerMap,
+                            onTextChange: { text in onTextChange?(utterance.id, text) }
+                        )
+                        .id(utterance.id)
                     }
 
                     // In-progress partial turn
