@@ -12,6 +12,7 @@ struct ControlBar: View {
     let onImport: () -> Void
     let onRename: () -> Void
     let onExport: () -> Void
+    let onSummarize: () -> Void
 
     private var canRename: Bool {
         if case .complete = diarizationStatus { return true }
@@ -49,6 +50,14 @@ struct ControlBar: View {
             }
             .disabled(!canRename)
             .help(canRename ? "Rename speakers" : "Available after diarization completes")
+
+            // Summarize button — enabled when there are turns
+            Button(action: onSummarize) {
+                Label("Summarize", systemImage: "sparkles")
+                    .font(.body)
+            }
+            .disabled(!canExport)
+            .help(canExport ? "Generate an AI summary of the transcript" : "Record or import a conversation first")
 
             // Export button — enabled when there are turns and not recording
             Button(action: onExport) {

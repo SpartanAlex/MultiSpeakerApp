@@ -4,10 +4,12 @@ import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
-    @State private var showRenameSheet  = false
-    @State private var showExporter     = false
-    @State private var showApiKeySheet  = false
-    @State private var exportSnapshot   = ""
+    @State private var showRenameSheet   = false
+    @State private var showExporter      = false
+    @State private var showApiKeySheet   = false
+    @State private var showSummarySheet  = false
+    @State private var exportSnapshot    = ""
+    @State private var summaryTranscript = ""
 
     var body: some View {
         VStack(spacing: 0) {
@@ -62,7 +64,8 @@ struct ContentView: View {
                 },
                 onImport:  { openImportPanel() },
                 onRename:  { showRenameSheet = true },
-                onExport:  { exportSnapshot = appState.exportText; showExporter = true }
+                onExport:  { exportSnapshot = appState.exportText; showExporter = true },
+                onSummarize: { summaryTranscript = appState.exportText; showSummarySheet = true }
             )
         }
         .frame(minWidth: 500, minHeight: 500)
@@ -88,6 +91,9 @@ struct ContentView: View {
         .sheet(isPresented: $showApiKeySheet) {
             ApiKeySheet()
                 .environmentObject(appState)
+        }
+        .sheet(isPresented: $showSummarySheet) {
+            SummarySheet(transcript: summaryTranscript)
         }
         .onAppear {
             if appState.configError != nil {

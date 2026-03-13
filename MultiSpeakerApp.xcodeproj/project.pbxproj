@@ -10,6 +10,7 @@
 		03D2666166FF3B0DF8B73009 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26926E1EE004ECE582A078A8 /* TranscriptView.swift */; };
 		22A336461E50FDBC217138BF /* MultiSpeakerAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EE1D532EB1582DF7A27CD4 /* MultiSpeakerAppApp.swift */; };
 		27B225EE3003BE052F25B0B6 /* ControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34322E56EFAD1EDB3955F56 /* ControlBar.swift */; };
+		282C5E1F46B548DC6FC5C393 /* SummaryProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A285AB903BD62AFD7F29B90 /* SummaryProvider.swift */; };
 		2A6C8711D39F9EDBA8AF3CA9 /* StreamingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBA027A8733D1CFF36FE23D /* StreamingClient.swift */; };
 		443153238D11807FC17A038E /* UtteranceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B97667FB389971986202A /* UtteranceRow.swift */; };
 		65C4B4F4FE29F6A128A75DF6 /* AudioFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75D69A6F835E9AD92C965B /* AudioFileWriter.swift */; };
@@ -22,6 +23,7 @@
 		B679A167992473C6B97FA9AD /* ApiKeySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DFBE101D313AAC7C4C36D6 /* ApiKeySheet.swift */; };
 		BA34B065EF73531F64E070CB /* SpeakerMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693DC2848C480B3141F3203A /* SpeakerMap.swift */; };
 		EB2D69E4BC55310A73115B0F /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37ADAADBF970CC2C2285EB2C /* AppConfig.swift */; };
+		EFD5322979BA0B854BBB34A5 /* SummarySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E5EEC884A842EAD0BBCFF8 /* SummarySheet.swift */; };
 		FF629D78F791FB9D48A3C607 /* Utterance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A58BC213ED4B4648EBDCCF3 /* Utterance.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,7 +42,9 @@
 		77DFBE101D313AAC7C4C36D6 /* ApiKeySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeySheet.swift; sourceTree = "<group>"; };
 		80C27BB6559F7857C80D52EB /* TranscriptDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDocument.swift; sourceTree = "<group>"; };
 		938B97667FB389971986202A /* UtteranceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtteranceRow.swift; sourceTree = "<group>"; };
+		94E5EEC884A842EAD0BBCFF8 /* SummarySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummarySheet.swift; sourceTree = "<group>"; };
 		960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCaptureEngine.swift; sourceTree = "<group>"; };
+		9A285AB903BD62AFD7F29B90 /* SummaryProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryProvider.swift; sourceTree = "<group>"; };
 		9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B915E28A2148650ACC2073B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		F34322E56EFAD1EDB3955F56 /* ControlBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBar.swift; sourceTree = "<group>"; };
@@ -54,6 +58,7 @@
 				9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */,
 				F34322E56EFAD1EDB3955F56 /* ControlBar.swift */,
 				2F979D0D9FB0F9A4F4C5FBBD /* SpeakerRenameSheet.swift */,
+				94E5EEC884A842EAD0BBCFF8 /* SummarySheet.swift */,
 				26926E1EE004ECE582A078A8 /* TranscriptView.swift */,
 				938B97667FB389971986202A /* UtteranceRow.swift */,
 			);
@@ -114,6 +119,7 @@
 			children = (
 				7425C5C4AD5D3685576E943E /* DiarizationClient.swift */,
 				0EBA027A8733D1CFF36FE23D /* StreamingClient.swift */,
+				9A285AB903BD62AFD7F29B90 /* SummaryProvider.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -197,6 +203,8 @@
 				BA34B065EF73531F64E070CB /* SpeakerMap.swift in Sources */,
 				6DBA3F3DC72A895A8B3FBDF9 /* SpeakerRenameSheet.swift in Sources */,
 				2A6C8711D39F9EDBA8AF3CA9 /* StreamingClient.swift in Sources */,
+				282C5E1F46B548DC6FC5C393 /* SummaryProvider.swift in Sources */,
+				EFD5322979BA0B854BBB34A5 /* SummarySheet.swift in Sources */,
 				A997D0807F2A4E8C7D95B22B /* TranscriptDocument.swift in Sources */,
 				03D2666166FF3B0DF8B73009 /* TranscriptView.swift in Sources */,
 				FF629D78F791FB9D48A3C607 /* Utterance.swift in Sources */,
