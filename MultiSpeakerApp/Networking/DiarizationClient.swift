@@ -61,6 +61,16 @@ final class DiarizationClient {
     // MARK: - Step 1: Upload
 
     private func upload(fileURL: URL, apiKey: String) async throws -> String {
+        // Guard against iCloud placeholder files that haven't been downloaded locally.
+        let attrs = try? FileManager.default.attributesOfItem(atPath: fileURL.path)
+        let fileSize = (attrs?[.size] as? Int) ?? 0
+        guard fileSize > 1024 else {
+            throw DiarizationError.uploadFailed(
+                "Audio file is empty or not downloaded (size: \(fileSize) bytes). " +
+                "If this is a Voice Memo stored in iCloud, open Voice Memos and wait for it to download first."
+            )
+        }
+
         let audioData = try Data(contentsOf: fileURL)
         var req = URLRequest(url: try endpoint("/v2/upload"))
         req.httpMethod = "POST"
@@ -68,7 +78,13 @@ final class DiarizationClient {
         req.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
         req.httpBody = audioData
 
-        let (data, _) = try await URLSession.shared.data(for: req)
+        let (data, response) = try await URLSession.shared.data(for: req)
+        let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+        guard statusCode == 200 else {
+            let msg = (try? JSONDecoder().decode(APIErrorResponse.self, from: data))?.error
+                ?? String(data: data, encoding: .utf8) ?? "HTTP \(statusCode)"
+            throw DiarizationError.uploadFailed(msg)
+        }
         let json = try JSONDecoder().decode([String: String].self, from: data)
         guard let url = json["upload_url"] else {
             throw DiarizationError.uploadFailed("No upload_url in response")
@@ -89,10 +105,16 @@ final class DiarizationClient {
             "speaker_labels": true
         ])
 
-        let (data, _) = try await URLSession.shared.data(for: req)
-        let response = try JSONDecoder().decode(TranscriptStatusResponse.self, from: data)
-        print("[DiarizationClient] Transcript requested — id: \(response.id)")
-        return response.id
+        let (data, response) = try await URLSession.shared.data(for: req)
+        let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+        guard statusCode == 200 else {
+            let msg = (try? JSONDecoder().decode(APIErrorResponse.self, from: data))?.error
+                ?? String(data: data, encoding: .utf8) ?? "HTTP \(statusCode)"
+            throw DiarizationError.transcriptionFailed("Request failed: \(msg)")
+        }
+        let transcriptResponse = try JSONDecoder().decode(TranscriptStatusResponse.self, from: data)
+        print("[DiarizationClient] Transcript requested — id: \(transcriptResponse.id)")
+        return transcriptResponse.id
     }
 
     // MARK: - Step 3: Poll
@@ -110,13 +132,19 @@ final class DiarizationClient {
             try await Task.sleep(nanoseconds: delayNs)
             delayNs = min(delayNs * 2, 4_000_000_000)
 
-            let (data, _) = try await URLSession.shared.data(for: req)
-            let response = try JSONDecoder().decode(TranscriptStatusResponse.self, from: data)
-            print("[DiarizationClient] Poll \(attempt) — status: \(response.status)")
+            let (data, response) = try await URLSession.shared.data(for: req)
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
+            guard statusCode == 200 else {
+                let msg = (try? JSONDecoder().decode(APIErrorResponse.self, from: data))?.error
+                    ?? "HTTP \(statusCode)"
+                throw DiarizationError.transcriptionFailed("Poll failed: \(msg)")
+            }
+            let pollResponse = try JSONDecoder().decode(TranscriptStatusResponse.self, from: data)
+            print("[DiarizationClient] Poll \(attempt) — status: \(pollResponse.status)")
 
-            switch response.status {
+            switch pollResponse.status {
             case "completed":
-                return response.utterances?.map {
+                return pollResponse.utterances?.map {
                     DiarizedUtterance(
                         speaker: $0.speaker,
                         text: $0.text,
@@ -125,7 +153,7 @@ final class DiarizationClient {
                     )
                 } ?? []
             case "error":
-                throw DiarizationError.transcriptionFailed(response.error ?? "Unknown error")
+                throw DiarizationError.transcriptionFailed(pollResponse.error ?? "Unknown error")
             default:
                 continue
             }
@@ -196,6 +224,10 @@ final class DiarizationClient {
 }
 
 // MARK: - Decodable response types
+
+private struct APIErrorResponse: Decodable {
+    let error: String
+}
 
 private struct TranscriptStatusResponse: Decodable {
     let id: String
