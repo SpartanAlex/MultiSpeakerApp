@@ -119,7 +119,8 @@ struct SummarySheet: View {
             Spacer(minLength: 0)
         }
         .padding(24)
-        .frame(width: 520, minHeight: 340)
+        .frame(width: 520)
+        .frame(minHeight: 340)
     }
 
     private func generate() {
