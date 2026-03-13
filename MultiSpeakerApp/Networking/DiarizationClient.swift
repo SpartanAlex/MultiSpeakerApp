@@ -102,7 +102,8 @@ final class DiarizationClient {
         req.setValue("application/json", forHTTPHeaderField: "Content-Type")
         req.httpBody = try JSONSerialization.data(withJSONObject: [
             "audio_url": audioURL,
-            "speaker_labels": true
+            "speaker_labels": true,
+            "speech_model": "universal-2"
         ])
 
         let (data, response) = try await URLSession.shared.data(for: req)
