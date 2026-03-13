@@ -155,7 +155,7 @@ final class AppState: ObservableObject {
         Task {
             do {
                 let result = try await diarizationClient.transcribe(
-                    wavURL: tempURL,
+                    audioURL: tempURL,
                     apiKey: key,
                     onStatus: { msg in
                         DispatchQueue.main.async {
@@ -170,6 +170,59 @@ final class AppState: ObservableObject {
                 await MainActor.run {
                     self.diarizationStatus = .failed(error.localizedDescription)
                     print("[AppState] Diarization failed: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    // MARK: - File import
+
+    /// Imports an audio file picked by the user (m4a, mp3, wav, etc.) and runs
+    /// the full diarization + LeMUR pipeline on it.
+    /// Security-scoped resource access is handled here before any file reads.
+    func importAndTranscribe(url: URL) {
+        guard let key = config?.assemblyAIKey else { return }
+
+        utterances.removeAll()
+        partialText = ""
+        lemurSuggestions = [:]
+        speakerMap.reset()
+        diarizationStatus = .uploading
+
+        Task {
+            // macOS sandbox: must access security-scoped bookmark, copy to temp, then release.
+            let accessed = url.startAccessingSecurityScopedResource()
+            defer { if accessed { url.stopAccessingSecurityScopedResource() } }
+
+            let ext = url.pathExtension.isEmpty ? "m4a" : url.pathExtension
+            let tempURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent(UUID().uuidString)
+                .appendingPathExtension(ext)
+
+            do {
+                try FileManager.default.copyItem(at: url, to: tempURL)
+            } catch {
+                await MainActor.run {
+                    self.diarizationStatus = .failed("Could not read file: \(error.localizedDescription)")
+                }
+                return
+            }
+
+            do {
+                let result = try await diarizationClient.transcribe(
+                    audioURL: tempURL,
+                    apiKey: key,
+                    onStatus: { msg in
+                        DispatchQueue.main.async { self.diarizationStatus = .processing(msg) }
+                    }
+                )
+                try? FileManager.default.removeItem(at: tempURL)
+                await MainActor.run { self.mergeResults(result) }
+            } catch {
+                try? FileManager.default.removeItem(at: tempURL)
+                await MainActor.run {
+                    self.diarizationStatus = .failed(error.localizedDescription)
+                    print("[AppState] Import failed: \(error.localizedDescription)")
                 }
             }
         }

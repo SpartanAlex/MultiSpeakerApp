@@ -1,7 +1,7 @@
 import Foundation
 
 /// Handles the full AssemblyAI async diarization pipeline:
-///   1. Upload WAV → get upload URL
+///   1. Upload audio file (any format: WAV, M4A, MP3…) → get upload URL
 ///   2. Request transcription with speaker_labels
 ///   3. Poll until complete
 ///   4. Ask LeMUR to infer real speaker names from context
@@ -30,16 +30,17 @@ final class DiarizationClient {
 
     // MARK: - Public API
 
-    /// Uploads `wavURL`, transcribes with speaker labels, then runs LeMUR.
+    /// Uploads `audioURL` (WAV, M4A, MP3, MP4 — AssemblyAI accepts all),
+    /// transcribes with speaker labels, then runs LeMUR.
     /// Progress stages are reported via `onStatus`.
     func transcribe(
-        wavURL: URL,
+        audioURL: URL,
         apiKey: String,
         onStatus: @escaping (String) -> Void
     ) async throws -> TranscriptResult {
 
         onStatus("Uploading audio…")
-        let uploadURL = try await upload(fileURL: wavURL, apiKey: apiKey)
+        let uploadURL = try await upload(fileURL: audioURL, apiKey: apiKey)
 
         onStatus("Requesting transcription…")
         let transcriptID = try await requestTranscription(audioURL: uploadURL, apiKey: apiKey)

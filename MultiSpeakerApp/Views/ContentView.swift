@@ -1,9 +1,11 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @State private var showRenameSheet = false
     @State private var showExporter    = false
+    @State private var showImporter    = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -47,6 +49,7 @@ struct ContentView: View {
                         appState.startRecording()
                     }
                 },
+                onImport:  { showImporter    = true },
                 onRename:  { showRenameSheet = true },
                 onExport:  { showExporter    = true }
             )
@@ -58,6 +61,20 @@ struct ContentView: View {
                 suggestions:   appState.lemurSuggestions,
                 speakerMap:    appState.speakerMap
             )
+        }
+        .fileImporter(
+            isPresented: $showImporter,
+            allowedContentTypes: [.audio, .mpeg4Audio, .mp3, .wav, .aiff],
+            allowsMultipleSelection: false
+        ) { result in
+            switch result {
+            case .success(let urls):
+                if let url = urls.first {
+                    appState.importAndTranscribe(url: url)
+                }
+            case .failure(let error):
+                print("[Import] File picker error: \(error.localizedDescription)")
+            }
         }
         .fileExporter(
             isPresented: $showExporter,

@@ -60,7 +60,7 @@ struct TranscriptView: View {
             Image(systemName: "waveform.and.mic")
                 .font(.largeTitle)
                 .foregroundStyle(.tertiary)
-            Text("Press Start Recording to begin")
+            Text("Record a conversation or import an audio file")
                 .font(.callout)
                 .foregroundStyle(.secondary)
         }

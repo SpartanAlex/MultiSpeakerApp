@@ -9,6 +9,7 @@ struct ControlBar: View {
     let diarizationStatus: DiarizationStatus
     let configError: String?
     let onToggleRecording: () -> Void
+    let onImport: () -> Void
     let onRename: () -> Void
     let onExport: () -> Void
 
@@ -32,6 +33,14 @@ struct ControlBar: View {
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
+
+            // Import audio file button
+            Button(action: onImport) {
+                Label("Import", systemImage: "square.and.arrow.down")
+                    .font(.body)
+            }
+            .disabled(isRecording)
+            .help("Import a Voice Memo or audio file")
 
             // Rename speakers button — enabled once diarization completes
             Button(action: onRename) {
