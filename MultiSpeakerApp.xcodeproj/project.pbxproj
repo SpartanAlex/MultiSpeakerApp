@@ -7,23 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03D2666166FF3B0DF8B73009 /* TranscriptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26926E1EE004ECE582A078A8 /* TranscriptView.swift */; };
 		22A336461E50FDBC217138BF /* MultiSpeakerAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EE1D532EB1582DF7A27CD4 /* MultiSpeakerAppApp.swift */; };
+		27B225EE3003BE052F25B0B6 /* ControlBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34322E56EFAD1EDB3955F56 /* ControlBar.swift */; };
+		2A6C8711D39F9EDBA8AF3CA9 /* StreamingClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBA027A8733D1CFF36FE23D /* StreamingClient.swift */; };
+		443153238D11807FC17A038E /* UtteranceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938B97667FB389971986202A /* UtteranceRow.swift */; };
 		65C4B4F4FE29F6A128A75DF6 /* AudioFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75D69A6F835E9AD92C965B /* AudioFileWriter.swift */; };
+		6DBA3F3DC72A895A8B3FBDF9 /* SpeakerRenameSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F979D0D9FB0F9A4F4C5FBBD /* SpeakerRenameSheet.swift */; };
 		779FCC00075EB79FECC4B876 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */; };
 		869781CB941449180A25ED4B /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B2FF63E825F0D661CA367 /* AppState.swift */; };
 		9E72D4D7A3F61AB36096A3FB /* AudioCaptureEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */; };
+		A997D0807F2A4E8C7D95B22B /* TranscriptDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C27BB6559F7857C80D52EB /* TranscriptDocument.swift */; };
+		B2D850692A4FC249468EDB52 /* DiarizationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7425C5C4AD5D3685576E943E /* DiarizationClient.swift */; };
+		BA34B065EF73531F64E070CB /* SpeakerMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693DC2848C480B3141F3203A /* SpeakerMap.swift */; };
 		EB2D69E4BC55310A73115B0F /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37ADAADBF970CC2C2285EB2C /* AppConfig.swift */; };
+		FF629D78F791FB9D48A3C607 /* Utterance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A58BC213ED4B4648EBDCCF3 /* Utterance.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0EBA027A8733D1CFF36FE23D /* StreamingClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamingClient.swift; sourceTree = "<group>"; };
 		1E3B2FF63E825F0D661CA367 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		26926E1EE004ECE582A078A8 /* TranscriptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptView.swift; sourceTree = "<group>"; };
 		27EE1D532EB1582DF7A27CD4 /* MultiSpeakerAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSpeakerAppApp.swift; sourceTree = "<group>"; };
+		2F979D0D9FB0F9A4F4C5FBBD /* SpeakerRenameSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerRenameSheet.swift; sourceTree = "<group>"; };
 		37ADAADBF970CC2C2285EB2C /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		3A58BC213ED4B4648EBDCCF3 /* Utterance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utterance.swift; sourceTree = "<group>"; };
 		3D75D69A6F835E9AD92C965B /* AudioFileWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileWriter.swift; sourceTree = "<group>"; };
+		693DC2848C480B3141F3203A /* SpeakerMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerMap.swift; sourceTree = "<group>"; };
 		696E74C0F04A341B21B7FEA3 /* MultiSpeakerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiSpeakerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7425C5C4AD5D3685576E943E /* DiarizationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarizationClient.swift; sourceTree = "<group>"; };
+		80C27BB6559F7857C80D52EB /* TranscriptDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDocument.swift; sourceTree = "<group>"; };
+		938B97667FB389971986202A /* UtteranceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtteranceRow.swift; sourceTree = "<group>"; };
 		960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCaptureEngine.swift; sourceTree = "<group>"; };
 		9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B915E28A2148650ACC2073B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		F34322E56EFAD1EDB3955F56 /* ControlBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -31,6 +49,10 @@
 			isa = PBXGroup;
 			children = (
 				9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */,
+				F34322E56EFAD1EDB3955F56 /* ControlBar.swift */,
+				2F979D0D9FB0F9A4F4C5FBBD /* SpeakerRenameSheet.swift */,
+				26926E1EE004ECE582A078A8 /* TranscriptView.swift */,
+				938B97667FB389971986202A /* UtteranceRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -59,6 +81,7 @@
 				A2C10759B8745312C46A8AF5 /* App */,
 				F67302A4AFD87D381A707963 /* Audio */,
 				CC83DE5D88826E2FE200464B /* Models */,
+				E86F8D8C4EA3726D0DE12F09 /* Networking */,
 				605206FC6B516DAC9B0AC9CC /* Views */,
 			);
 			path = MultiSpeakerApp;
@@ -76,8 +99,20 @@
 			isa = PBXGroup;
 			children = (
 				37ADAADBF970CC2C2285EB2C /* AppConfig.swift */,
+				693DC2848C480B3141F3203A /* SpeakerMap.swift */,
+				80C27BB6559F7857C80D52EB /* TranscriptDocument.swift */,
+				3A58BC213ED4B4648EBDCCF3 /* Utterance.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		E86F8D8C4EA3726D0DE12F09 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				7425C5C4AD5D3685576E943E /* DiarizationClient.swift */,
+				0EBA027A8733D1CFF36FE23D /* StreamingClient.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		F67302A4AFD87D381A707963 /* Audio */ = {
@@ -152,7 +187,16 @@
 				9E72D4D7A3F61AB36096A3FB /* AudioCaptureEngine.swift in Sources */,
 				65C4B4F4FE29F6A128A75DF6 /* AudioFileWriter.swift in Sources */,
 				779FCC00075EB79FECC4B876 /* ContentView.swift in Sources */,
+				27B225EE3003BE052F25B0B6 /* ControlBar.swift in Sources */,
+				B2D850692A4FC249468EDB52 /* DiarizationClient.swift in Sources */,
 				22A336461E50FDBC217138BF /* MultiSpeakerAppApp.swift in Sources */,
+				BA34B065EF73531F64E070CB /* SpeakerMap.swift in Sources */,
+				6DBA3F3DC72A895A8B3FBDF9 /* SpeakerRenameSheet.swift in Sources */,
+				2A6C8711D39F9EDBA8AF3CA9 /* StreamingClient.swift in Sources */,
+				A997D0807F2A4E8C7D95B22B /* TranscriptDocument.swift in Sources */,
+				03D2666166FF3B0DF8B73009 /* TranscriptView.swift in Sources */,
+				FF629D78F791FB9D48A3C607 /* Utterance.swift in Sources */,
+				443153238D11807FC17A038E /* UtteranceRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
