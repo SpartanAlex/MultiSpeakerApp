@@ -1,0 +1,343 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22A336461E50FDBC217138BF /* MultiSpeakerAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EE1D532EB1582DF7A27CD4 /* MultiSpeakerAppApp.swift */; };
+		65C4B4F4FE29F6A128A75DF6 /* AudioFileWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D75D69A6F835E9AD92C965B /* AudioFileWriter.swift */; };
+		779FCC00075EB79FECC4B876 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */; };
+		869781CB941449180A25ED4B /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E3B2FF63E825F0D661CA367 /* AppState.swift */; };
+		9E72D4D7A3F61AB36096A3FB /* AudioCaptureEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */; };
+		EB2D69E4BC55310A73115B0F /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37ADAADBF970CC2C2285EB2C /* AppConfig.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1E3B2FF63E825F0D661CA367 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		27EE1D532EB1582DF7A27CD4 /* MultiSpeakerAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiSpeakerAppApp.swift; sourceTree = "<group>"; };
+		37ADAADBF970CC2C2285EB2C /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		3D75D69A6F835E9AD92C965B /* AudioFileWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileWriter.swift; sourceTree = "<group>"; };
+		696E74C0F04A341B21B7FEA3 /* MultiSpeakerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiSpeakerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCaptureEngine.swift; sourceTree = "<group>"; };
+		9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B915E28A2148650ACC2073B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		605206FC6B516DAC9B0AC9CC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		793B2082D08D4137C2C397AC = {
+			isa = PBXGroup;
+			children = (
+				B311BBC5557E11C48743E621 /* MultiSpeakerApp */,
+				C256F50AAF5C81DCA5399550 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A2C10759B8745312C46A8AF5 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1E3B2FF63E825F0D661CA367 /* AppState.swift */,
+				27EE1D532EB1582DF7A27CD4 /* MultiSpeakerAppApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B311BBC5557E11C48743E621 /* MultiSpeakerApp */ = {
+			isa = PBXGroup;
+			children = (
+				B915E28A2148650ACC2073B7 /* Info.plist */,
+				A2C10759B8745312C46A8AF5 /* App */,
+				F67302A4AFD87D381A707963 /* Audio */,
+				CC83DE5D88826E2FE200464B /* Models */,
+				605206FC6B516DAC9B0AC9CC /* Views */,
+			);
+			path = MultiSpeakerApp;
+			sourceTree = "<group>";
+		};
+		C256F50AAF5C81DCA5399550 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				696E74C0F04A341B21B7FEA3 /* MultiSpeakerApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CC83DE5D88826E2FE200464B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				37ADAADBF970CC2C2285EB2C /* AppConfig.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		F67302A4AFD87D381A707963 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */,
+				3D75D69A6F835E9AD92C965B /* AudioFileWriter.swift */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B80757C0F747F5D6503D4D1D /* MultiSpeakerApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5E13DEFE015D735484D1AE58 /* Build configuration list for PBXNativeTarget "MultiSpeakerApp" */;
+			buildPhases = (
+				79F0DDFE7653E38E83DE8341 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MultiSpeakerApp;
+			packageProductDependencies = (
+			);
+			productName = MultiSpeakerApp;
+			productReference = 696E74C0F04A341B21B7FEA3 /* MultiSpeakerApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		883D30E96B9F216667AAE364 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					B80757C0F747F5D6503D4D1D = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 36ACADAFA86266FF154C5870 /* Build configuration list for PBXProject "MultiSpeakerApp" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 793B2082D08D4137C2C397AC;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = C256F50AAF5C81DCA5399550 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B80757C0F747F5D6503D4D1D /* MultiSpeakerApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		79F0DDFE7653E38E83DE8341 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EB2D69E4BC55310A73115B0F /* AppConfig.swift in Sources */,
+				869781CB941449180A25ED4B /* AppState.swift in Sources */,
+				9E72D4D7A3F61AB36096A3FB /* AudioCaptureEngine.swift in Sources */,
+				65C4B4F4FE29F6A128A75DF6 /* AudioFileWriter.swift in Sources */,
+				779FCC00075EB79FECC4B876 /* ContentView.swift in Sources */,
+				22A336461E50FDBC217138BF /* MultiSpeakerAppApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		05C7B0B89DA0EFCFE6B1D040 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MultiSpeakerApp/MultiSpeakerApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MultiSpeakerApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.multispeakerapp.MultiSpeakerApp;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2F53BDB36BA6230A442F8AA7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		CD4A8036D0D12EAA951661FE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		F6A17C4204699F31C4A383F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MultiSpeakerApp/MultiSpeakerApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = MultiSpeakerApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.multispeakerapp.MultiSpeakerApp;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		36ACADAFA86266FF154C5870 /* Build configuration list for PBXProject "MultiSpeakerApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD4A8036D0D12EAA951661FE /* Debug */,
+				2F53BDB36BA6230A442F8AA7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5E13DEFE015D735484D1AE58 /* Build configuration list for PBXNativeTarget "MultiSpeakerApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F6A17C4204699F31C4A383F6 /* Debug */,
+				05C7B0B89DA0EFCFE6B1D040 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 883D30E96B9F216667AAE364 /* Project object */;
+}

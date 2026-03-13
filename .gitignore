@@ -1,11 +1,12 @@
 # API keys — never commit
 .env
 
-# Xcode
+# Xcode user-specific (commit the .xcodeproj itself)
 *.xcuserstate
 xcuserdata/
 DerivedData/
-*.xcworkspace/xcuserdata/
+**/*.xcodeproj/xcuserdata/
+**/*.xcworkspace/xcuserdata/
 build/
 *.ipa
 *.dSYM.zip

@@ -1,0 +1,43 @@
+name: MultiSpeakerApp
+options:
+  bundleIdPrefix: com.multispeakerapp
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "14.0"
+    ENABLE_HARDENED_RUNTIME: YES
+
+targets:
+  MultiSpeakerApp:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: MultiSpeakerApp
+        excludes:
+          - "*.entitlements"
+    resources:
+      - path: .env
+        optional: true
+    entitlements:
+      path: MultiSpeakerApp/MultiSpeakerApp.entitlements
+    info:
+      path: MultiSpeakerApp/Info.plist
+      properties:
+        CFBundleName: MultiSpeakerApp
+        CFBundleDisplayName: MultiSpeakerApp
+        CFBundleIdentifier: com.multispeakerapp.MultiSpeakerApp
+        CFBundleVersion: "1"
+        CFBundleShortVersionString: "1.0"
+        NSMicrophoneUsageDescription: MultiSpeakerApp needs the microphone to transcribe conversations.
+        NSPrincipalClass: NSApplication
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.multispeakerapp.MultiSpeakerApp
+        CODE_SIGN_STYLE: Automatic
+        INFOPLIST_FILE: MultiSpeakerApp/Info.plist
