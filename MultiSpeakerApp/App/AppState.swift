@@ -58,11 +58,17 @@ final class AppState: ObservableObject {
     private func loadConfig() {
         do {
             config = try AppConfig.load()
+            configError = nil
             print("[AppState] API key loaded ✓")
         } catch {
             configError = error.localizedDescription
             print("[AppState] Config error: \(error.localizedDescription)")
         }
+    }
+
+    /// Re-reads the API key (e.g. after the user saves it via ApiKeySheet).
+    func reloadConfig() {
+        loadConfig()
     }
 
     // MARK: - Wiring

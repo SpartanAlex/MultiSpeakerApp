@@ -19,6 +19,7 @@
 		9E72D4D7A3F61AB36096A3FB /* AudioCaptureEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */; };
 		A997D0807F2A4E8C7D95B22B /* TranscriptDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80C27BB6559F7857C80D52EB /* TranscriptDocument.swift */; };
 		B2D850692A4FC249468EDB52 /* DiarizationClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7425C5C4AD5D3685576E943E /* DiarizationClient.swift */; };
+		B679A167992473C6B97FA9AD /* ApiKeySheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DFBE101D313AAC7C4C36D6 /* ApiKeySheet.swift */; };
 		BA34B065EF73531F64E070CB /* SpeakerMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 693DC2848C480B3141F3203A /* SpeakerMap.swift */; };
 		EB2D69E4BC55310A73115B0F /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37ADAADBF970CC2C2285EB2C /* AppConfig.swift */; };
 		FF629D78F791FB9D48A3C607 /* Utterance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A58BC213ED4B4648EBDCCF3 /* Utterance.swift */; };
@@ -36,6 +37,7 @@
 		693DC2848C480B3141F3203A /* SpeakerMap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerMap.swift; sourceTree = "<group>"; };
 		696E74C0F04A341B21B7FEA3 /* MultiSpeakerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiSpeakerApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7425C5C4AD5D3685576E943E /* DiarizationClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiarizationClient.swift; sourceTree = "<group>"; };
+		77DFBE101D313AAC7C4C36D6 /* ApiKeySheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKeySheet.swift; sourceTree = "<group>"; };
 		80C27BB6559F7857C80D52EB /* TranscriptDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptDocument.swift; sourceTree = "<group>"; };
 		938B97667FB389971986202A /* UtteranceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtteranceRow.swift; sourceTree = "<group>"; };
 		960E2D7F0EB59E2947E066FC /* AudioCaptureEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioCaptureEngine.swift; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 		605206FC6B516DAC9B0AC9CC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				77DFBE101D313AAC7C4C36D6 /* ApiKeySheet.swift */,
 				9DCEEFA5C9FF649B8B1AA5F9 /* ContentView.swift */,
 				F34322E56EFAD1EDB3955F56 /* ControlBar.swift */,
 				2F979D0D9FB0F9A4F4C5FBBD /* SpeakerRenameSheet.swift */,
@@ -182,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B679A167992473C6B97FA9AD /* ApiKeySheet.swift in Sources */,
 				EB2D69E4BC55310A73115B0F /* AppConfig.swift in Sources */,
 				869781CB941449180A25ED4B /* AppState.swift in Sources */,
 				9E72D4D7A3F61AB36096A3FB /* AudioCaptureEngine.swift in Sources */,

@@ -1,29 +1,44 @@
 import Foundation
 
-/// Holds app-wide configuration loaded from a `.env` file.
-///
-/// Search order:
-///   1. App bundle resources (works if .env is added to Copy Bundle Resources)
-///   2. `~/.config/multispeakerapp/.env`  — user-level, survives rebuilds
+/// Holds app-wide configuration. The API key is persisted in UserDefaults,
+/// which is always accessible to sandboxed macOS apps.
 struct AppConfig {
     let assemblyAIKey: String
 
-    static func load() throws -> AppConfig {
-        let candidates: [URL] = [
-            // 1. Bundle (may be excluded as a dotfile by Xcode — fallback below)
-            Bundle.main.url(forResource: ".env", withExtension: nil),
-            // 2. ~/.config/multispeakerapp/.env
-            FileManager.default.homeDirectoryForCurrentUser
-                .appendingPathComponent(".config/multispeakerapp/.env")
-        ].compactMap { $0 }
+    private static let defaultsKey = "assemblyAIKey"
 
-        for url in candidates {
-            guard FileManager.default.fileExists(atPath: url.path) else { continue }
-            if let config = try? parse(contentsOf: url) { return config }
+    // MARK: - Load
+
+    static func load() throws -> AppConfig {
+        // 1. UserDefaults (primary — sandbox-safe, persists across launches)
+        if let key = UserDefaults.standard.string(forKey: defaultsKey), !key.isEmpty {
+            return AppConfig(assemblyAIKey: key)
+        }
+
+        // 2. Bundle .env (dev convenience — may be present when running from Xcode)
+        if let url = Bundle.main.url(forResource: ".env", withExtension: nil),
+           let config = try? parse(contentsOf: url) {
+            // Migrate to UserDefaults so future launches don't need the bundle file.
+            save(apiKey: config.assemblyAIKey)
+            return config
         }
 
         throw ConfigError.envFileNotFound
     }
+
+    // MARK: - Save
+
+    /// Persists the API key to UserDefaults. Call after the user enters the key in-app.
+    static func save(apiKey: String) {
+        UserDefaults.standard.set(apiKey, forKey: defaultsKey)
+    }
+
+    /// Removes the stored key (for testing / reset).
+    static func clear() {
+        UserDefaults.standard.removeObject(forKey: defaultsKey)
+    }
+
+    // MARK: - .env parser
 
     private static func parse(contentsOf url: URL) throws -> AppConfig {
         let contents = try String(contentsOf: url, encoding: .utf8)
@@ -52,9 +67,9 @@ enum ConfigError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .envFileNotFound:
-            return "API key not found. Create ~/.config/multispeakerapp/.env with ASSEMBLYAI_API_KEY=your_key"
+            return "AssemblyAI API key not configured. Enter your key in Settings."
         case .missingKey(let key):
-            return "'\(key)' is missing or empty in .env."
+            return "'\(key)' is missing or empty."
         }
     }
 }

@@ -6,19 +6,28 @@ struct ContentView: View {
     @State private var showRenameSheet = false
     @State private var showExporter    = false
     @State private var showImporter    = false
+    @State private var showApiKeySheet = false
 
     var body: some View {
         VStack(spacing: 0) {
-            // Config error banner
+            // Config error banner — tapping opens the key entry sheet
             if let error = appState.configError {
-                HStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.yellow)
-                    Text(error).font(.footnote)
-                    Spacer()
+                Button {
+                    showApiKeySheet = true
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.yellow)
+                        Text(error + " Tap to configure.").font(.footnote)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(10)
+                    .background(.red.opacity(0.12))
                 }
-                .padding(10)
-                .background(.red.opacity(0.12))
+                .buttonStyle(.plain)
             }
 
             // Diarization status banner
@@ -86,6 +95,15 @@ struct ContentView: View {
                 print("[Export] Failed: \(error.localizedDescription)")
             } else {
                 print("[Export] Saved successfully")
+            }
+        }
+        .sheet(isPresented: $showApiKeySheet) {
+            ApiKeySheet()
+                .environmentObject(appState)
+        }
+        .onAppear {
+            if appState.configError != nil {
+                showApiKeySheet = true
             }
         }
     }
