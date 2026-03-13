@@ -201,4 +201,33 @@ final class AppState: ObservableObject {
     func renameSpeaker(label: String, name: String) {
         speakerMap.setName(name, for: label)
     }
+
+    // MARK: - Export
+
+    /// Generates a plain-text transcript with speaker labels and timestamps stripped,
+    /// ready to be written via TranscriptDocument / .fileExporter.
+    var exportText: String {
+        var lines: [String] = []
+
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .short
+
+        lines.append("MultiSpeakerApp Transcript")
+        lines.append("Generated: \(formatter.string(from: Date()))")
+        lines.append(String(repeating: "-", count: 40))
+        lines.append("")
+
+        for utterance in utterances {
+            let label: String
+            if let speakerLabel = utterance.speakerLabel {
+                label = speakerMap.displayName(for: speakerLabel)
+            } else {
+                label = utterance.effectiveLabel
+            }
+            lines.append("\(label): \(utterance.text)")
+        }
+
+        return lines.joined(separator: "\n")
+    }
 }

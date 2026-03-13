@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @State private var showRenameSheet = false
+    @State private var showExporter    = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -46,7 +47,8 @@ struct ContentView: View {
                         appState.startRecording()
                     }
                 },
-                onRename: { showRenameSheet = true }
+                onRename:  { showRenameSheet = true },
+                onExport:  { showExporter    = true }
             )
         }
         .frame(minWidth: 500, minHeight: 500)
@@ -56,6 +58,18 @@ struct ContentView: View {
                 suggestions:   appState.lemurSuggestions,
                 speakerMap:    appState.speakerMap
             )
+        }
+        .fileExporter(
+            isPresented: $showExporter,
+            document: TranscriptDocument(text: appState.exportText),
+            contentType: .plainText,
+            defaultFilename: "Transcript"
+        ) { result in
+            if case .failure(let error) = result {
+                print("[Export] Failed: \(error.localizedDescription)")
+            } else {
+                print("[Export] Saved successfully")
+            }
         }
     }
 

@@ -10,11 +10,14 @@ struct ControlBar: View {
     let configError: String?
     let onToggleRecording: () -> Void
     let onRename: () -> Void
+    let onExport: () -> Void
 
     private var canRename: Bool {
         if case .complete = diarizationStatus { return true }
         return false
     }
+
+    private var canExport: Bool { utteranceCount > 0 && !isRecording }
 
     var body: some View {
         HStack(spacing: 16) {
@@ -37,6 +40,14 @@ struct ControlBar: View {
             }
             .disabled(!canRename)
             .help(canRename ? "Rename speakers" : "Available after diarization completes")
+
+            // Export button — enabled when there are turns and not recording
+            Button(action: onExport) {
+                Label("Export", systemImage: "square.and.arrow.up")
+                    .font(.body)
+            }
+            .disabled(!canExport)
+            .help(canExport ? "Export transcript as text file" : "Record a conversation first")
 
             // Record / Stop button
             Button(action: onToggleRecording) {
