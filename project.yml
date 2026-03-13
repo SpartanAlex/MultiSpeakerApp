@@ -26,6 +26,11 @@ targets:
         optional: true
     entitlements:
       path: MultiSpeakerApp/MultiSpeakerApp.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+        com.apple.security.device.audio-input: true
+        com.apple.security.network.client: true
+        com.apple.security.files.user-selected.read-only: true
     info:
       path: MultiSpeakerApp/Info.plist
       properties:

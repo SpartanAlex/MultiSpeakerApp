@@ -1,25 +1,41 @@
 import Foundation
 
-/// Holds app-wide configuration loaded from the `.env` file in the app bundle.
+/// Holds app-wide configuration loaded from a `.env` file.
+///
+/// Search order:
+///   1. App bundle resources (works if .env is added to Copy Bundle Resources)
+///   2. `~/.config/multispeakerapp/.env`  — user-level, survives rebuilds
 struct AppConfig {
     let assemblyAIKey: String
 
     static func load() throws -> AppConfig {
-        guard let envURL = Bundle.main.url(forResource: ".env", withExtension: nil) else {
-            throw ConfigError.envFileNotFound
+        let candidates: [URL] = [
+            // 1. Bundle (may be excluded as a dotfile by Xcode — fallback below)
+            Bundle.main.url(forResource: ".env", withExtension: nil),
+            // 2. ~/.config/multispeakerapp/.env
+            FileManager.default.homeDirectoryForCurrentUser
+                .appendingPathComponent(".config/multispeakerapp/.env")
+        ].compactMap { $0 }
+
+        for url in candidates {
+            guard FileManager.default.fileExists(atPath: url.path) else { continue }
+            if let config = try? parse(contentsOf: url) { return config }
         }
-        let contents = try String(contentsOf: envURL, encoding: .utf8)
+
+        throw ConfigError.envFileNotFound
+    }
+
+    private static func parse(contentsOf url: URL) throws -> AppConfig {
+        let contents = try String(contentsOf: url, encoding: .utf8)
         var keyValues: [String: String] = [:]
 
         for line in contents.components(separatedBy: .newlines) {
             let trimmed = line.trimmingCharacters(in: .whitespaces)
             guard !trimmed.isEmpty, !trimmed.hasPrefix("#") else { continue }
-            // Split on first `=` only, to allow `=` in values
             let parts = trimmed.split(separator: "=", maxSplits: 1).map(String.init)
             guard parts.count == 2 else { continue }
-            let key = parts[0].trimmingCharacters(in: .whitespaces)
-            let value = parts[1].trimmingCharacters(in: .whitespaces)
-            keyValues[key] = value
+            keyValues[parts[0].trimmingCharacters(in: .whitespaces)] =
+                parts[1].trimmingCharacters(in: .whitespaces)
         }
 
         guard let key = keyValues["ASSEMBLYAI_API_KEY"], !key.isEmpty else {
@@ -36,7 +52,7 @@ enum ConfigError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .envFileNotFound:
-            return ".env file not found in app bundle. Add it to Copy Bundle Resources."
+            return "API key not found. Create ~/.config/multispeakerapp/.env with ASSEMBLYAI_API_KEY=your_key"
         case .missingKey(let key):
             return "'\(key)' is missing or empty in .env."
         }
