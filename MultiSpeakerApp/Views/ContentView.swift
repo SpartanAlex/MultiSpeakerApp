@@ -1,16 +1,16 @@
 import SwiftUI
 
-/// Phase (a) — minimal UI to verify the audio pipeline.
-/// Will be replaced with the full transcript view in Phase (c).
+/// Phase (b) — verifies the full audio → WebSocket → transcript pipeline.
+/// Will be replaced with the full scrolling transcript UI in Phase (c).
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
 
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 20) {
 
             // Config error banner
             if let error = appState.configError {
-                HStack {
+                HStack(spacing: 8) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .foregroundStyle(.yellow)
                     Text(error)
@@ -19,6 +19,9 @@ struct ContentView: View {
                 .padding(12)
                 .background(.red.opacity(0.1), in: RoundedRectangle(cornerRadius: 8))
             }
+
+            // Connection status
+            streamingStatusBadge
 
             // Record / Stop button
             Button {
@@ -38,21 +41,66 @@ struct ContentView: View {
             .tint(appState.isRecording ? .red : .accentColor)
             .disabled(appState.configError != nil)
 
-            // Live diagnostics
-            if appState.isRecording || appState.chunkCount > 0 {
-                VStack(spacing: 4) {
-                    Label("Recording…", systemImage: "waveform")
-                        .foregroundStyle(.red)
-                        .opacity(appState.isRecording ? 1 : 0)
+            // Diagnostics
+            Text("\(appState.chunkCount) chunks · \(appState.utterances.count) turns")
+                .font(.footnote.monospacedDigit())
+                .foregroundStyle(.secondary)
 
-                    Text("\(appState.chunkCount) chunks received")
-                        .font(.footnote.monospacedDigit())
-                        .foregroundStyle(.secondary)
+            Divider()
+
+            // Live transcript preview (Phase b verification)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 8) {
+                    ForEach(appState.utterances) { turn in
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(turn.effectiveLabel)
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                            Text(turn.text)
+                                .font(.body)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
+                    // Partial / in-progress turn
+                    if !appState.partialText.isEmpty {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Turn \(appState.utterances.count + 1) …")
+                                .font(.caption.weight(.semibold))
+                                .foregroundStyle(.secondary)
+                            Text(appState.partialText)
+                                .font(.body)
+                                .foregroundStyle(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
+                .padding()
             }
+            .background(.background.secondary, in: RoundedRectangle(cornerRadius: 10))
         }
-        .padding(40)
-        .frame(minWidth: 340, minHeight: 220)
+        .padding()
+        .frame(minWidth: 400, minHeight: 400)
+    }
+
+    // MARK: - Sub-views
+
+    @ViewBuilder
+    private var streamingStatusBadge: some View {
+        switch appState.streamingState {
+        case .disconnected:
+            Label("Disconnected", systemImage: "circle")
+                .foregroundStyle(.secondary)
+                .font(.caption)
+        case .connecting:
+            Label("Connecting…", systemImage: "circle.dotted")
+                .foregroundStyle(.orange)
+                .font(.caption)
+        case .connected:
+            Label("Streaming", systemImage: "circle.fill")
+                .foregroundStyle(.green)
+                .font(.caption)
+        }
     }
 }
 
